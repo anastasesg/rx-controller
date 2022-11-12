@@ -1,0 +1,21 @@
+{
+  "name": "rx-controller",
+  "version": "1.0.2-alpha",
+  "description": "The reactive business logic controller",
+  "main": "index.js",
+  "author": {
+    "name": "Anastases Giannikopoulos",
+    "email": "anastasesgiannikopoulos@gmail.com"
+  },
+  "license": "MIT",
+  "private": true,
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/anastasesg/rx-controller"
+  },
+  "workspaces": [
+    "packages/core",
+    "packages/react",
+    "packages/plugins/**"
+  ]
+}

@@ -1,0 +1,45 @@
+{
+  "folders": [
+    {
+      "path": "packages/core",
+      "name": "Core"
+    },
+    {
+      "path": "packages/react",
+      "name": "React"
+    },
+    {
+      "path": "packages/plugins/react-navigation-plugin",
+      "name": "Plugins/React Navigation"
+    },
+    {
+      "path": ".",
+      "name": "Root"
+    }
+  ],
+  "extensions": {
+    "recommendations": [
+      "christian-kohler.npm-intellisense",
+      "dbaeumer.vscode-eslint",
+      "esbenp.prettier-vscode",
+      "ms-vscode.vscode-typescript-next",
+      "pkief.material-icon-theme",
+      "visualstudioexptteam.vscodeintellicode",
+      "zhuangtongfa.material-theme",
+      "gamunu.vscode-yarn",
+      "aaron-bond.better-comments",
+      "valentjn.vscode-ltex"
+    ]
+  },
+  "settings": {
+    "files.exclude": {
+      "**/node_modules": true,
+      "**/packages": true
+    },
+    "ltex.additionalRules.motherTongue": "el-GR",
+    "prettier.bracketSameLine": true,
+    "eslint.packageManager": "yarn",
+    "editor.formatOnSave": true,
+    "editor.formatOnPaste": true
+  }
+}
