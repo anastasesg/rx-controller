@@ -36,7 +36,6 @@ export class Store<
 
     this._controllers = keys.reduce((cont, key) => {
       const controller = container.resolve(controllers[key]);
-      Object.freeze(controller.emitter);
       cont[key] = controller;
       return cont;
     }, {} as Record<keyof TControllers, Controller<any, any>>);
