@@ -1,6 +1,6 @@
 {
   "name": "@rx-controller/react",
-  "version": "1.0.0-rc6",
+  "version": "1.0.0-rc7",
   "description": "React hooks and bindings for rx-controller",
   "author": {
     "name": "Anastases Giannikopoulos",
