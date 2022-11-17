@@ -1,6 +1,6 @@
 {
   "name": "@rx-controller/react",
-  "version": "1.0.0-rc7",
+  "version": "1.0.0-rc8",
   "description": "React hooks and bindings for rx-controller",
   "author": {
     "name": "Anastases Giannikopoulos",
@@ -32,10 +32,10 @@
   "dependencies": {
     "@babel/runtime": "^7.19.4",
     "lodash": "^4.17.21",
-    "@rx-controller/core": "1.0.0-rc4"
+    "@rx-controller/core": "1.0.0-rc5"
   },
   "peerDependencies": {
-    "@rx-controller/core": "1.0.0-rc4",
+    "@rx-controller/core": "1.0.0-rc5",
     "react": "^16.8 || ^17.0 || ^18.0",
     "react-dom": "^16.8 || ^17.0 || ^18.0",
     "react-native": ">=0.59",

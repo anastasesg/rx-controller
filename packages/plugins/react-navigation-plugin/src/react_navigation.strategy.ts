@@ -28,9 +28,10 @@ export class ReactNavigationStrategy implements Strategy {
     const updateState = useCallback((next: State<TController>) => {
       if (shouldUpdate(state, next)) {
         setState(next);
-        listener(next);
       }
     }, []);
+
+    const unsubscribe = listener(controller.emitter);
 
     useFocusEffect(
       useCallback(() => {
@@ -38,7 +39,6 @@ export class ReactNavigationStrategy implements Strategy {
           const subscription = store
             .getSlice(symbol)
             .subscribe((next) => updateState(next));
-          const unsubscribe = listener(controller.emitter);
           onMount(controller);
           return () => {
             subscription.unsubscribe();
