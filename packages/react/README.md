@@ -28,7 +28,7 @@ For example, if you are creating a vanilla React project the default strategy sp
 
 You can create your own strategies by creating a class that implements the `Strategy` class like this.
 ```typescript
-import { Controller, ClassLike, State } from "@rx-controller/core";
+import { Controller, ClassLike, Emitter, State } from "@rx-controller/core";
 import { Strategy, UseControllerOptions, useStore } from "@rx-controller/react";
 
 export class MyStrategy implements Strategy {
@@ -43,8 +43,9 @@ export class MyStrategy implements Strategy {
       onMount = (controller: TController) => null,
       // This callback will be called when the component unmounts
       onUnmount = (controller: TController) => null,
-      // This callback listens for a state and executes when a condition is met
-      listener = (state: TState) => null,
+      // This callback listens for events emitted by the controller and handles them.
+      // The listener must return a callback that removes the listeners it added.
+      listener = (emitter: Emitter) => () => null,
       // This callback specifies the condition which must be me in order to update the component
       shouldUpdate = (prev: TState, next: TState) => true,
     } = { ...options };
@@ -56,9 +57,7 @@ export class MyStrategy implements Strategy {
 
 ## Configure your Project
 
-To integrate this library to your React or React-Native project you first need to configure it to support decorators and metadata emition.
-
-For React I suggest you take a look at [craco](https://www.npmjs.com/package/@craco/craco) or if anyone has a better way I would love to hear it.
+To integrate this library to your React or React-Native project you first need to configure it to support decorators and metadata emition. For React I suggest you take a look at [craco](https://www.npmjs.com/package/@craco/craco) or if anyone has a better way I would love to hear it.
 
 For React-Native you need to either create or modify your babel configuration to use the [babel-plugin-transform-typescript-metadata](https://www.npmjs.com/package/babel-plugin-transform-typescript-metadata) plugin. Since they explain its installation and configuration in such length I suggest you take a look at their page.
 

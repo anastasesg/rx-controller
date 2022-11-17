@@ -16,6 +16,7 @@ export class DefaultStrategy implements Strategy {
       onUnmount = () => null,
       shouldUpdate = (prev: State<TController>, next: State<TController>) =>
         !isEqual(prev, next),
+      listener = () => () => null,
     } = { ...options };
 
     const store = useStore();
@@ -37,9 +38,11 @@ export class DefaultStrategy implements Strategy {
     useEffect(() => {
       if (subscribe) {
         const subscription = store.getSlice(symbol).subscribe(updateState);
+        const unsubscribe = listener(controller.emitter);
         onMount(controller);
         return () => {
           subscription.unsubscribe();
+          unsubscribe();
           onUnmount(controller);
         };
       }
