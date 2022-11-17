@@ -1128,15 +1128,6 @@
     estree-walker "^2.0.2"
     picomatch "^2.3.1"
 
-"@rx-controller/react@1.0.0-rc4":
-  version "1.0.0-rc4"
-  resolved "https://registry.yarnpkg.com/@rx-controller/react/-/react-1.0.0-rc4.tgz#36b2e845943114426230d4e9c6a66bf4f8313f15"
-  integrity sha512-nSiSfToDYHGwyloiq2o2+ZTZp5GXRNavnsKBgm3HCVlAKV7AJ7Ux1JP4boyVIx05kP8RzAzpLYecT/POhcdNwg==
-  dependencies:
-    "@babel/runtime" "^7.19.4"
-    "@rx-controller/core" "1.0.0-rc4"
-    lodash "^4.17.21"
-
 "@types/estree@*", "@types/estree@^1.0.0":
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/@types/estree/-/estree-1.0.0.tgz#5fb2e536c1ae9bf35366eed879e827fa59ca41c2"

@@ -12,7 +12,7 @@ export class ReactNavigationStrategy implements Strategy {
       subscribe = true,
       onMount = () => null,
       onUnmount = () => null,
-      listener = () => null,
+      listener = () => () => null,
       shouldUpdate = () => true,
     } = { ...options };
 
@@ -38,10 +38,12 @@ export class ReactNavigationStrategy implements Strategy {
           const subscription = store
             .getSlice(symbol)
             .subscribe((next) => updateState(next));
+          const unsubscribe = listener(controller.emitter);
           onMount(controller);
           return () => {
-            onUnmount(controller);
             subscription.unsubscribe();
+            unsubscribe();
+            onUnmount(controller);
           };
         }
       }, [])
