@@ -31,14 +31,13 @@ export class ReactNavigationStrategy implements Strategy {
       }
     }, []);
 
-    const unsubscribe = listener(controller.emitter);
-
     useFocusEffect(
       useCallback(() => {
         if (subscribe) {
           const subscription = store
             .getSlice(symbol)
             .subscribe((next) => updateState(next));
+          const unsubscribe = listener(controller.emitter);
           onMount(controller);
           return () => {
             subscription.unsubscribe();

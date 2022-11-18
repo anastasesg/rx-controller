@@ -1,6 +1,6 @@
 {
   "name": "@rx-controller/react-navigation-plugin",
-  "version": "1.0.0-rc7",
+  "version": "1.0.0-rc8",
   "description": "Plugin to support react navigation lifecycle events",
   "author": {
     "name": "Anastases Giannikopoulos",
