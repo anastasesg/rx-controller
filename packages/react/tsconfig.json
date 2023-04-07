@@ -3,8 +3,8 @@
   "compilerOptions": {
     "rootDir": "./src",
     "declaration": true,
-    "declarationDir": "./build/types",
-    "emitDeclarationOnly": true
+    "declarationDir": "./dist/types",
+    "outDir": "./dist/esm"
   },
   "include": ["src/**/*", "types"],
   "exclude": ["node_modules"]

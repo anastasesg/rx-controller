@@ -3,7 +3,8 @@
   "compilerOptions": {
     "lib": ["DOM", "ES2017"],
     "declaration": true,
-    "declarationDir": "./build/types"
+    "outDir": "./dist/esm",
+    "declarationDir": "./dist/types"
   },
   "include": ["./src/**/*"]
 }

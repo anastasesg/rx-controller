@@ -1,6 +1,6 @@
 import { BehaviorSubject, Subscription } from "rxjs";
-import { Emitter } from "./emitter";
-import { ActionEvent, EventHandler } from "./types/action-event";
+import { EventEmitter } from "eventemitter3";
+import { ActionEvent, EventHandler } from "./types";
 
 /**
  * Abstract class to be implemented when creating a new controller. A controller
@@ -40,15 +40,15 @@ import { ActionEvent, EventHandler } from "./types/action-event";
  * controller.subscribe(console.log) // First time prints { x: 10, y: 20, product: undefined }
  * controller.add("calculateProduct") // When the action completes the log should print { x: 10, y: 20, product: 200 }
  *
- * @param TState The state of the controller. Can be of a primitive type string, number, boolean, etc. to any user created type.
+ * @param TState The state of the controller. Can be a primitive type string, number, boolean, etc. or any user created type.
  * @param TEvent The events that the controller can listen to. Should be a record like object where the key specifies the event name and its value specifies the argument type of the event
  */
 export abstract class Controller<TState, TEvent extends ActionEvent> {
-  public emitter: Emitter;
+  public emitter: EventEmitter;
   public subject: BehaviorSubject<TState>;
 
   constructor(initialState: TState) {
-    this.emitter = new Emitter();
+    this.emitter = new EventEmitter();
     this.subject = new BehaviorSubject(initialState);
   }
 

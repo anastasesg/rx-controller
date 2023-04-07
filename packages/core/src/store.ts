@@ -1,9 +1,8 @@
-import { combineLatest, map, Observable } from "rxjs";
+import { Observable, map } from "rxjs";
 import { DependencyContainer } from "tsyringe";
 import { Controller } from "./controller";
-import { ClassLike } from "./types/class-like";
-import { Controllers } from "./types/controllers";
-import { State } from "./types/state";
+import { ClassLike, NestedObject, State } from "./types";
+import { createState, flattenControllers, unflattenState } from "./utils";
 
 /**
  * A store consists of all the controllers in an application. Its purpose is to be
@@ -22,38 +21,23 @@ import { State } from "./types/state";
  * @param TState The overall state of the store.
  */
 export class Store<
-  TControllers extends Controllers,
+  TControllers extends NestedObject<ClassLike<Controller<any, any>>>,
   TState extends State<TControllers>
 > {
-  private readonly _controllers: Record<
-    keyof TControllers,
-    Controller<any, any>
-  >;
-  public readonly state: Observable<TState>;
+  private readonly _controllers: Record<string, Controller<any, any>>;
+  private readonly _state: Observable<Record<string, any>>;
 
+  //prettier-ignore
   constructor(controllers: TControllers, container: DependencyContainer) {
-    const keys = Reflect.ownKeys(controllers) as (keyof typeof controllers)[];
-
-    this._controllers = keys.reduce((cont, key) => {
-      const controller = container.resolve(controllers[key]);
-      cont[key] = controller;
-      return cont;
-    }, {} as Record<keyof TControllers, Controller<any, any>>);
-
-    this.state = combineLatest(
-      keys.reduce((state, key) => {
-        const controller = this._controllers[key];
-
-        if (!controller)
-          throw new Error(
-            `Could not resolve controller ${controllers[key].prototype.constructor.name}`
-          );
-        state[key] = controller.subject;
-        return state;
-      }, {} as Record<keyof typeof controllers, Observable<any>>)
-    ) as Observable<TState>;
+    this._controllers = flattenControllers(controllers, container);
+    this._state = createState(this._controllers);
   }
 
+  public get state(): Observable<TState> {
+    return this._state.pipe(map(unflattenState<TState>));
+  }
+
+  //prettier-ignore
   /**
    * It gets the slice of the specified controller and returns it as an observable.
    *
@@ -61,23 +45,16 @@ export class Store<
    * @returns An `Observable` of that controllers state.
    * @throws Error when the controllers slice you want to get is not registered in the store.
    */
-  public getSlice<TController extends Controller<any, any>>(
-    symbol: ClassLike<TController>
-  ): Observable<State<TController>> {
-    const controllerKey = (
-      Reflect.ownKeys(this._controllers) as (keyof typeof this._controllers)[]
-    ).find((k) => this._controllers[k] instanceof symbol);
+  public resolveSlice<TController extends Controller<any, any>>(symbol: ClassLike<TController>): Observable<State<TController>> {
+    const controllerKey = Object.keys(this._controllers).find((k) => this._controllers[k] instanceof symbol);
 
     if (!controllerKey)
-      throw new Error(
-        `Could not find a controller for the provided type ${symbol.prototype.constructor.name}. Did you forget to register it?`
-      );
+      throw new Error(`Could not find a controller for the provided type ${symbol.prototype.constructor.name}. Did you forget to register it?`);
 
-    return this.state.pipe(
-      map((s: TState) => s[controllerKey as keyof TState])
-    ) as Observable<State<TController>>;
+    return this._state.pipe(map((s) => s[controllerKey])) as Observable<State<TController>>;
   }
 
+  //prettier-ignore
   /**
    * It gets the instance of the specified controller as long as it is registered in the store.
    *
@@ -85,17 +62,11 @@ export class Store<
    * @returns The controller if it is registered in the store.
    * @throws Error when the controller you want to get is not registered in the store.
    */
-  public resolve<TController extends Controller<any, any>>(
-    symbol: ClassLike<TController>
-  ): TController {
-    const controllerKey = (
-      Reflect.ownKeys(this._controllers) as (keyof typeof this._controllers)[]
-    ).find((k) => this._controllers[k] instanceof symbol);
+  public resolveController<TController extends Controller<any, any>>(symbol: ClassLike<TController>): TController {
+    const controllerKey = Object.keys(this._controllers).find((k) => this._controllers[k] instanceof symbol);
 
     if (!controllerKey)
-      throw new Error(
-        `Could not find a controller for the provided type ${symbol.prototype.constructor.name}. Did you forget to register it?`
-      );
+      throw new Error(`Could not find a controller for the provided type ${symbol.prototype.constructor.name}. Did you forget to register it?`);
 
     return this._controllers[controllerKey] as TController;
   }

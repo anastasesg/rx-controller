@@ -1,1 +1,1 @@
-export * from "./use_controller.options";
+export * from "./use_controller";
