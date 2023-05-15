@@ -16,6 +16,7 @@ export class DefaultStrategy implements Strategy {
 			onUnmount = () => null,
 			shouldUpdate = (prev: State<TController>, next: State<TController>) => !isEqual(prev, next),
 			listener = () => () => null,
+			deps= []
 		} = {...options};
 
 		const store = useStore();
@@ -40,7 +41,7 @@ export class DefaultStrategy implements Strategy {
 					onUnmount(controller);
 				};
 			}
-		}, []);
+		}, deps);
 
 		return [state, controller];
 	}
